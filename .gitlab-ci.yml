@@ -1,0 +1,23 @@
+image: maven:latest
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+stages:
+  - registration-service
+  - events-service
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+registration-service:
+  stage: registration-service
+  script:
+    - mvn compile --file registration-service/pom.xml
+
+events-service:
+  stage: events-service
+  script:
+    - mvn compile --file events-service/pom.xml
