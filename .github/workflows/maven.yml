@@ -1,25 +1,11 @@
-image: maven:latest
-
-variables:
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
-cache:
-  paths:
-    - .m2/repository/
-    - target/
-
-build:
-  stage: build
-  script:
-    - mvn compile
 
 name: Maven CI/CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     pull_request:
-      branches: [ master ]
+      branches: [ main ]
 
 jobs:
   build_and_test:
@@ -40,8 +26,8 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Build event-service
-        run: mvn -B package --file events-service/pom.xml
+      - name: Build events-service with Maven
+        run: mvn compile --file events-service/pom.xml
 
-      - name: Build registration-service
-        run: mvn -B package --file registration-service/pom.xml
+      - name: Build registration-service with Maven
+        run: mvn compile --file registration-service/pom.xml
